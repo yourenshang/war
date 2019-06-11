@@ -2,8 +2,8 @@
 // Created by shangyouren on 2019-06-06.
 //
 
-#include "../define/process.h"
-#include "../process/manager.h"
+#include "../utils/define/process.h"
+#include "../utils/process/manager.h"
 
 int init(){
     if (init_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE)){
