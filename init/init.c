@@ -17,7 +17,7 @@ int init(){
 int destory(){
     int result = destory_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE);
     if (result){
-        //todo 输出日志 释放信号量失败
+        print_log("error", "init", "/init/init/destory释放信号量失败");
     }
     if (destory_process_shm()){
         return -1;
