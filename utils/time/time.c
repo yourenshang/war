@@ -6,6 +6,7 @@
 #include "../string/string.h"
 
 int now(char * result){
+    strcpy(result, "");
     time_t t;
     time(&t);
     struct tm * lt = localtime(&t);

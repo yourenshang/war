@@ -4,8 +4,10 @@
 
 #include "../utils/define/process.h"
 #include "../utils/process/manager.h"
+#include "../utils/log/log.h"
 
 int init(){
+    init_log();
     if (init_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE)){
         return -1;
     }

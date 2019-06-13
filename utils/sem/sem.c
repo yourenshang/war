@@ -3,6 +3,8 @@
 //
 
 #include <sys/sem.h>
+#include "../define/module.h"
+#include "../log/log.h"
 
 int get_sem(int key, int size, int index){
     int sem_id = sem_id = semget((key_t)key, size, 0666 | IPC_CREAT);
@@ -43,9 +45,9 @@ int init_sem(int key, int size){
     init.val = 1;
     for (int i = 0; i < size; i++) {
         if (semctl(sem_id, i, SETVAL, init) < 0) {
-            //todo 输出日志 初始化信号量失败
+            print_log("error", MODULE_SEM, "/utils/sem/sem/init_sem初始化信号量失败")
             if (semctl(sem_id, 0, IPC_RMID)){
-                //todo 输出日志 注销信号量失败
+                print_log("error", MODULE_SEM, "/utils/sem/sem/init_sem注销信号量失败")
             }
             return -1;
         }

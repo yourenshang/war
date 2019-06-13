@@ -59,3 +59,12 @@ int itoc(const int source, char * target){
     }
     target[nt] = '\0';
 }
+
+int to_upper(char * source){
+    for (int i = 0; i < strlen(source); i++){
+        if (source[i] >= 'a' && source[i] <= 'z'){
+            source[i] = source[i] - 'a' + 'A';
+        }
+    }
+    return 0;
+}

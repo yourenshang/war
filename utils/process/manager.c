@@ -10,19 +10,21 @@
 #include "../sem/sem.h"
 #include <string.h>
 #include <stdio.h>
+#include "../define/module.h"
+#include "../log/log.h"
 
 int release_process_manager(void *manager){
     int result = RETURN_SUCCESS;
     if (manager != NULL) {
         if (shmdt(manager) == -1) {
-            //todo 输出日志 释放共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/release_process_manager释放共享内存失败");
             result = RETURN_RELEASE_SHM_FAIL;
         }
     }
     if (!release_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE, 0)){
         return result;
     }else {
-        //TODO 输出日志 释放信号量失败
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/release_process_manager释放信号量失败");
         return RETURN_RELEASE_SEM_FAIL;
     }
 }
@@ -37,13 +39,13 @@ int push_process(const char * name, const pid_t pid){
     if (!get_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE, 0)){
         int shm_id = shmget(PROCESS_MANAGER_SHM_KEY, sizeof(struct process_manager), PROCESS_MANAGER_PROMESS | IPC_CREAT);
         if (shm_id < 0){
-            //todo 输出日志 获取共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/push_process获取共享内存失败");
             release_process_manager(NULL);
             return RETURN_GET_SHM_FAIL;
         }
         struct process_manager* manager = shmat(shm_id, NULL, 0);
         if (manager == -1){
-            //todo 输出日志 绑定共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/push_process绑定共享内存失败");
             release_process_manager(NULL);
             return RETURN_BIND_FAIL;
         }
@@ -65,7 +67,7 @@ int push_process(const char * name, const pid_t pid){
         release_process_manager(manager);
         return RETURN_SUCCESS;
     }else {
-        //todo 输出日志 获取锁失败
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/push_process获取信号量失败");
         return RETURN_GET_SEM_FAIL;
     }
 }
@@ -81,13 +83,13 @@ pid_t get_pid(const char * name){
     if (!get_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE, 0)){
         int shm_id = shmget(PROCESS_MANAGER_SHM_KEY, sizeof(struct process_manager), PROCESS_MANAGER_PROMESS | IPC_CREAT);
         if (shm_id < 0){
-            //todo 输出日志 获取共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/get_pid获取共享内存失败");
             release_process_manager(NULL);
             return RETURN_GET_SHM_FAIL;
         }
         struct process_manager * manager = shmat(shm_id, NULL, 0);
         if (manager == -1){
-            //todo 输出日志 绑定共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/get_pid绑定共享内存失败");
             release_process_manager(NULL);
             return RETURN_BIND_FAIL;
         }
@@ -102,7 +104,7 @@ pid_t get_pid(const char * name){
         release_process_manager(manager);
         return RETURN_NOT_FOUND;
     }else {
-        //todo 输出日志 获取锁失败
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/get_pid获取信号量失败");
         return RETURN_GET_SEM_FAIL;
     }
 }
@@ -117,13 +119,13 @@ int remove_process(const pid_t pid){
     if (!get_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE, 0)){
         int shm_id = shmget(PROCESS_MANAGER_SHM_KEY, sizeof(struct process_manager), PROCESS_MANAGER_PROMESS | IPC_CREAT);
         if (shm_id < 0){
-            //todo 输出日志 获取共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/remove_process获取共享内存失败");
             release_process_manager(NULL);
             return RETURN_GET_SHM_FAIL;
         }
         struct process_manager * manager = shmat(shm_id, NULL, 0);
         if (manager == -1){
-            //todo 输出日志 绑定共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/remove_process绑定共享内存失败");
             release_process_manager(NULL);
             return RETURN_BIND_FAIL;
         }
@@ -150,7 +152,7 @@ int remove_process(const pid_t pid){
         release_process_manager(manager);
         return RETURN_NOT_FOUND;
     }else {
-        //todo 输出日志 获取锁失败
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/remove_process获取信号量失败");
         return RETURN_GET_SEM_FAIL;
     }
 }
@@ -162,13 +164,13 @@ int print_process(){
     if (!get_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE, 0)){
         int shm_id = shmget(PROCESS_MANAGER_SHM_KEY, sizeof(struct process_manager), PROCESS_MANAGER_PROMESS | IPC_CREAT);
         if (shm_id < 0){
-            //todo 输出日志 获取共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/print_process获取共享内存失败");
             release_process_manager(NULL);
             return RETURN_GET_SHM_FAIL;
         }
         struct process_manager * manager = shmat(shm_id, NULL, 0);
         if (manager == -1){
-            //todo 输出日志 绑定共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/print_process绑定共享内存失败");
             release_process_manager(NULL);
             return RETURN_BIND_FAIL;
         }
@@ -180,7 +182,7 @@ int print_process(){
         release_process_manager(manager);
         return RETURN_SUCCESS;
     }else {
-        //todo 输出日志 获取锁失败
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/print_process获取信号量失败");
         return RETURN_GET_SEM_FAIL;
     }
 }
@@ -193,12 +195,14 @@ int clean_process(){
         int shm_id = shmget(PROCESS_MANAGER_SHM_KEY, sizeof(struct process_manager), PROCESS_MANAGER_PROMESS | IPC_CREAT);
         if (shm_id < 0){
             //todo 输出日志 获取共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/close_process获取共享内存失败");
             release_process_manager(NULL);
             return RETURN_GET_SHM_FAIL;
         }
         struct process_manager * manager = shmat(shm_id, NULL, 0);
         if (manager == -1){
             //todo 输出日志 绑定共享内存失败
+            print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/close_process绑定共享内存失败");
             release_process_manager(NULL);
             return RETURN_BIND_FAIL;
         }
@@ -210,6 +214,7 @@ int clean_process(){
         return RETURN_SUCCESS;
     }else {
         //todo 输出日志 获取锁失败
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/close_process获取信号量失败");
         return RETURN_GET_SEM_FAIL;
     }
 }
@@ -220,9 +225,11 @@ int clean_process(){
 int destory_process_shm(){
     int shm_id = shmget(PROCESS_MANAGER_SHM_KEY, sizeof(struct process_manager), PROCESS_MANAGER_PROMESS | IPC_CREAT);
     if (shm_id == -1){
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/destory_process_shm获取共享内存失败");
         return -1;
     }
     if (shmctl(shm_id, 0, IPC_RMID)){
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/destory_process_shm删除共享内存失败");
         return -1;
     }
     return 0;
