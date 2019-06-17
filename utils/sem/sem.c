@@ -45,9 +45,9 @@ int init_sem(int key, int size){
     init.val = 1;
     for (int i = 0; i < size; i++) {
         if (semctl(sem_id, i, SETVAL, init) < 0) {
-            print_log("error", MODULE_SEM, "/utils/sem/sem/init_sem初始化信号量失败")
+            print_log("error", MODULE_SEM, "/utils/sem/sem/init_sem初始化信号量失败");
             if (semctl(sem_id, 0, IPC_RMID)){
-                print_log("error", MODULE_SEM, "/utils/sem/sem/init_sem注销信号量失败")
+                print_log("error", MODULE_SEM, "/utils/sem/sem/init_sem注销信号量失败");
             }
             return -1;
         }

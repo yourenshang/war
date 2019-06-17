@@ -23,11 +23,20 @@ int init_log(){
     }
 }
 
+int print_log_param(const char * lev, const char * module, const char * message, const char * param){
+    char now_time[25];
+    now(now_time);
+    char lev_test[10];
+    strcpy(lev_test, lev);
+    to_upper(lev_test);
+    printf("[%s] [%s] PID:%d %s: %s%s\n", now_time, lev_test, getpid(), module, message, param);
+}
+
 int print_log(const char * lev, const char * module, const char * message){
     char now_time[25];
     now(now_time);
     char lev_test[10];
     strcpy(lev_test, lev);
     to_upper(lev_test);
-    printf("[%s] [%s] %d %s: %s\n", now_time, lev_test, getpid(), module, message);
+    printf("[%s] [%s] PID:%d %s: %s\n", now_time, lev_test, getpid(), module, message);
 }

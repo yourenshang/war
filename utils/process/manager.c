@@ -234,3 +234,27 @@ int destory_process_shm(){
     }
     return 0;
 }
+
+/**
+ * 初始化进程管理（主进程开始时执行）
+ */
+int init_process_manager(){
+    if (init_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE)){
+        print_log("error", MODULE_PROCESS_MANAGER, "utils/process/manager/init_process_sem初始化信号量失败");
+        return -1;
+    }
+    return 0;
+}
+
+int destory_process_manager(){
+    int result = destory_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE);
+    if (result){
+        print_log("error", "init", "/init/init/destory释放信号量失败");
+    }
+    if (destory_process_shm()){
+        return -1;
+    }
+    return result;
+}
+
+

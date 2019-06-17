@@ -10,6 +10,7 @@
 #include "sem/sem.h"
 #include "string/string.h"
 #include "time/time.h"
-#include "log/log.c"
+#include "log/log.h"
+#include "socket/socket.h"
 
 #endif //WAR_UTILS_H

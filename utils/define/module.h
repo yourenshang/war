@@ -13,6 +13,10 @@
 
 #define MODULE_SIGNAL "信号"
 
+#define MODULE_SERVER "socket服务"
+
+#define MODULE_CLIENT "socket客户端"
+
 
 
 #endif //WAR_MODULE_H
