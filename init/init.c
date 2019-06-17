@@ -8,20 +8,13 @@
 
 int init(){
     init_log();
-    if (init_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE)){
-        return -1;
+    if (init_process_manager()){
+        exit(EXIT_FAILURE);
     }
     return 0;
 }
 
 int destory(){
-    int result = destory_sem(PROCESS_MANAGER_SEM_KEY, PROCESS_MANAGER_SEM_SIZE);
-    if (result){
-        print_log("error", "init", "/init/init/destory释放信号量失败");
-    }
-    if (destory_process_shm()){
-        return -1;
-    }
-    return result;
+    return destory_process_manager();
 }
 
